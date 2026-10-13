@@ -1,0 +1,68 @@
+# =====================================================================================
+# Monorepo root .gitattributes
+#
+# Goal: identical line endings for everyone. The repository stores LF; files are checked
+# out as LF too, regardless of the Windows machine-wide core.autocrlf=true setting.
+# backend/.gitattributes keeps its own diff drivers and export-ignore rules (a nested
+# file takes precedence inside backend/ and agrees with the rules below).
+# =====================================================================================
+
+# Default: let Git detect text vs binary, and normalise text to LF.
+* text=auto eol=lf
+
+# ---- Text files (explicit, so they are never mistaken for binary) --------------------
+*.php         text eol=lf diff=php
+*.blade.php   text eol=lf diff=html
+*.ts          text eol=lf
+*.tsx         text eol=lf
+*.js          text eol=lf
+*.jsx         text eol=lf
+*.mjs         text eol=lf
+*.cjs         text eol=lf
+*.json        text eol=lf
+*.css         text eol=lf diff=css
+*.scss        text eol=lf
+*.html        text eol=lf diff=html
+*.md          text eol=lf diff=markdown
+*.mdx         text eol=lf
+*.yml         text eol=lf
+*.yaml        text eol=lf
+*.xml         text eol=lf
+*.svg         text eol=lf
+*.txt         text eol=lf
+*.sh          text eol=lf
+.editorconfig text eol=lf
+.gitignore    text eol=lf
+.gitattributes text eol=lf
+.env.example  text eol=lf
+.env.*.example text eol=lf
+
+# ---- Windows scripts keep CRLF so they run correctly on Windows ----------------------
+*.bat         text eol=crlf
+*.cmd         text eol=crlf
+*.ps1         text eol=crlf
+
+# ---- Binary files: never convert or diff as text -------------------------------------
+*.png         binary
+*.jpg         binary
+*.jpeg        binary
+*.gif         binary
+*.webp        binary
+*.avif        binary
+*.ico         binary
+*.pdf         binary
+*.woff        binary
+*.woff2       binary
+*.ttf         binary
+*.otf         binary
+*.eot         binary
+*.zip         binary
+*.gz          binary
+*.mp4         binary
+*.webm        binary
+*.sqlite      binary
+*.node        binary
+
+# ---- Lock files: keep tracked and exact, collapse them in diffs and language stats ---
+package-lock.json   text eol=lf -diff linguist-generated=true
+composer.lock       text eol=lf -diff linguist-generated=true

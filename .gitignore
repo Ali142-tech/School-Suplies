@@ -1,0 +1,80 @@
+# =====================================================================================
+# Monorepo root .gitignore  (backend/ = Laravel, frontend/ = Next.js, docs/)
+#
+# Rules here apply to the whole repository. backend/ and frontend/ have their own
+# .gitignore files for rules that only make sense there. Git applies all of them;
+# a nested file can only add rules or re-include inside its own folder.
+#
+# IMPORTANT: do NOT add an unanchored "vendor" rule here. frontend/src/app/vendor and
+# frontend/src/app/(public)/vendor are real source folders (the vendor dashboard).
+# Composer's folder is ignored in backend/.gitignore as "/vendor", which is anchored.
+# =====================================================================================
+
+# ---- Environment files: ignore EVERY variant, keep only documented examples ---------
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# ---- Secrets and credentials ---------------------------------------------------------
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+id_rsa*
+id_ed25519*
+auth.json
+credentials.json
+service-account*.json
+
+# ---- Logs ----------------------------------------------------------------------------
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ---- Dependencies (any depth) --------------------------------------------------------
+node_modules/
+
+# ---- Build output and caches ---------------------------------------------------------
+.next/
+.vercel
+*.tsbuildinfo
+coverage/
+.nyc_output/
+.cache/
+.eslintcache
+
+# ---- Local databases, dumps and backups ----------------------------------------------
+*.sqlite
+*.sqlite3
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+*.dump
+*.bak
+*.backup
+*.orig
+*.rej
+
+# ---- OS and editor files -------------------------------------------------------------
+.DS_Store
+Thumbs.db
+ehthumbs.db
+desktop.ini
+$RECYCLE.BIN/
+.idea/
+.vscode/
+.fleet/
+.nova/
+.zed/
+*.swp
+*.swo
+*~
+
+# ---- Scratch / temporary files -------------------------------------------------------
+*.tmp
+*.temp
+/tmp/

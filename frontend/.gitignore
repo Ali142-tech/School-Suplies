@@ -1,0 +1,38 @@
+# Next.js frontend (rules specific to frontend/; repository-wide rules are in ../.gitignore)
+
+# ---- Dependencies ----
+/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# ---- Next.js and Vercel generated output (rebuilt by `next build` / on Vercel) ----
+/.next/
+/.next-*/
+/out/
+/build/
+.vercel
+
+# ---- TypeScript / tooling caches and generated files ----
+*.tsbuildinfo
+next-env.d.ts
+.eslintcache
+
+# ---- Testing ----
+/coverage
+
+# ---- Environment files: ignore all variants, keep documented examples tracked ----
+.env
+.env.*
+!.env.example
+!.env.*.example
+
+# ---- Logs ----
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# ---- Misc ----
+.DS_Store
+*.pem
