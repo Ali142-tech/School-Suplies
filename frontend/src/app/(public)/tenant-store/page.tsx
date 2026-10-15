@@ -5,7 +5,7 @@ import { getSite, getSitePage, vendorHost } from '@/lib/site';
 
 // Vendor homepage. A published CMS "Home" page is shown when there is one; otherwise the existing product storefront.
 async function home() {
-  const host = vendorHost();
+  const host = await vendorHost();
   if (!host) return { host: '', page: null };
   try { return { host, page: await getSitePage(host, 'home') }; } catch { return { host, page: null }; }
 }

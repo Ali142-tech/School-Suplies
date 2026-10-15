@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { createContext, useContext, useEffect, useState } from 'react';
-import { ExternalLink, FileText, LayoutDashboard, LogOut, Menu, Package, PackageCheck, Palette, Printer, Receipt, School, Settings, UserRound, X } from 'lucide-react';
+import { ExternalLink, FileText, LayoutDashboard, LogOut, Menu, Package, PackageCheck, Palette, Printer, Receipt, School, Settings, Tags, UserRound, X } from 'lucide-react';
 import { apiFetch, clearAccessToken, hasAccessToken, type ApiData } from '@/lib/api';
 
 export type ShellVendor = { id: number; name: string; slug: string; status: string };
@@ -16,6 +16,7 @@ export function useVendorSession() { return useContext(SessionContext); }
 const nav = [
   { label: 'Overview', href: '/vendor/dashboard', icon: LayoutDashboard },
   { label: 'Products & inventory', href: '/vendor/products', icon: Package },
+  { label: 'Categories', href: '/vendor/categories', icon: Tags },
   { label: 'Printing services', href: '/vendor/printing', icon: Printer },
   { label: 'Orders', href: '/vendor/orders', icon: Receipt },
   { label: 'Schools & customers', href: '/vendor/schools', icon: School },
