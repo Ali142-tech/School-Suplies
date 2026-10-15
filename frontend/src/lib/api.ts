@@ -41,7 +41,8 @@ export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise
   try {
     response = await fetch(url, { ...init, headers, cache: init.cache ?? 'no-store' });
   } catch (error) {
-    throw new ApiError(error instanceof Error ? error.message : 'Could not reach the API. Check that Laravel is running.', 0);
+    void error;
+    throw new ApiError('We can’t reach the server right now. Check your internet connection and try again.', 0);
   }
 
   const contentType = response.headers.get('content-type') ?? '';
@@ -57,7 +58,8 @@ export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise
     const message = (typeof validation === 'string' ? validation : undefined)
       ?? (typeof body?.message === 'string' ? body.message : undefined)
       ?? `API request failed (${response.status}).`;
-    throw new ApiError(message, response.status, body?.errors);
+    const friendly = response.status === 429 ? 'Too many attempts. Please wait a minute and try again.' : response.status >= 500 ? 'Something went wrong on our side. Please try again in a moment.' : message;
+    throw new ApiError(friendly, response.status, body?.errors);
   }
 
   return payload as T;
