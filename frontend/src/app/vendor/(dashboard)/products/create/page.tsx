@@ -1,2 +1,2 @@
-import { VendorProducts } from '@/components/vendor-sections';
-export default function CreateVendorProductPage(){return <VendorProducts createOnly/>;}
+import { VendorProducts } from '@/components/vendor/products';
+export default function CreateVendorProductPage() { return <VendorProducts startOpen />; }

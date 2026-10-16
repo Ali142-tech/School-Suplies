@@ -1,2 +1,2 @@
-import { VendorPrinting } from '@/components/vendor-printing';
-export default function VendorPrintingPage(){return <VendorPrinting/>;}
+import { VendorPrinting } from '@/components/vendor/printing';
+export default function VendorPrintingPage() { return <VendorPrinting />; }

@@ -1,3 +1,2 @@
-import { VendorSchools } from '@/components/vendor-sections';
-
-export default function VendorSchoolsPage(){return <VendorSchools/>;}
+import { VendorSchools } from '@/components/vendor/customers';
+export default function VendorSchoolsPage() { return <VendorSchools />; }

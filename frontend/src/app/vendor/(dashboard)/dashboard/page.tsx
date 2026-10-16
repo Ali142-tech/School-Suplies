@@ -1,2 +1,2 @@
-import { VendorWorkspace } from '@/components/workspace';
-export default function VendorDashboard(){return <VendorWorkspace/>;}
+import { VendorOverview } from '@/components/vendor/overview';
+export default function VendorDashboard() { return <VendorOverview />; }

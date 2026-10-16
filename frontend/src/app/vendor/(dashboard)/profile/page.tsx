@@ -1,2 +1,2 @@
-import { VendorProfile } from '@/components/vendor-sections';
-export default function VendorProfilePage(){return <VendorProfile/>;}
+import { VendorProfile } from '@/components/vendor/profile';
+export default function VendorProfilePage() { return <VendorProfile />; }

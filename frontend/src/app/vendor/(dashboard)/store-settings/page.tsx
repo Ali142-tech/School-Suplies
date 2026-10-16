@@ -1,2 +1,2 @@
-import { VendorStoreSettings } from '@/components/vendor-sections';
-export default function VendorStoreSettingsPage(){return <VendorStoreSettings/>;}
+import { VendorStoreSettings } from '@/components/vendor/settings';
+export default function VendorStoreSettingsPage() { return <VendorStoreSettings />; }

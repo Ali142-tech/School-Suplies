@@ -1,2 +1,2 @@
-import { VendorOrders } from '@/components/vendor-sections';
-export default function VendorOrdersPage(){return <VendorOrders/>;}
+import { VendorOrders } from '@/components/vendor/orders';
+export default function VendorOrdersPage() { return <VendorOrders />; }
