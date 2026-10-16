@@ -16,6 +16,7 @@ export type ApiPage<T> = { data: T[]; meta: { current_page: number; last_page: n
 export type ApiData<T> = { data: T; message?: string };
 
 const TOKEN_KEY = 'printinf-access-token';
+export const UNAUTHORIZED_EVENT = 'printinf:unauthorized';
 export function saveAccessToken(token: string) { if (typeof window !== 'undefined') window.sessionStorage.setItem(TOKEN_KEY, token); }
 export function clearAccessToken() { if (typeof window !== 'undefined') window.sessionStorage.removeItem(TOKEN_KEY); }
 export function hasAccessToken() { return typeof window !== 'undefined' && !!window.sessionStorage.getItem(TOKEN_KEY); }
@@ -59,6 +60,8 @@ export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise
       ?? (typeof body?.message === 'string' ? body.message : undefined)
       ?? `API request failed (${response.status}).`;
     const friendly = response.status === 429 ? 'Too many attempts. Please wait a minute and try again.' : response.status >= 500 ? 'Something went wrong on our side. Please try again in a moment.' : message;
+    // A rejected bearer token means the session is gone: let any open portal shell send the person back to sign in.
+    if (response.status === 401 && typeof window !== 'undefined' && window.sessionStorage.getItem(TOKEN_KEY)) window.dispatchEvent(new Event(UNAUTHORIZED_EVENT));
     throw new ApiError(friendly, response.status, body?.errors);
   }
 

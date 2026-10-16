@@ -13,7 +13,7 @@ export default function Catalog({ initialCategory }: { initialCategory: string }
   const [sort, setSort] = useState('featured');
   const [max, setMax] = useState('27820');
   const [items, setItems] = useState<Product[]>([]);
-  const [categoryNames, setCategoryNames] = useState<string[]>(mockCategories);
+  const [categoryNames, setCategoryNames] = useState<string[]>(useMockData ? mockCategories : ['All products']);
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
   const [error, setError] = useState('');
 

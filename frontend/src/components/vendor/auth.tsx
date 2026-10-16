@@ -85,7 +85,7 @@ export function VendorLogin() {
   }
 
   return <AuthFrame title="Run your store from one calm dashboard." text="Sign in to manage products, orders, printing quotes and your store website.">
-    <form ref={formRef} onSubmit={submit} noValidate>
+    <form ref={formRef} method="post" onSubmit={submit} noValidate>
       <h1>Welcome back</h1>
       <p className="sub">Sign in to your vendor account.</p>
       <FormAlert message={error} bannerRef={bannerRef} />
@@ -137,7 +137,7 @@ export function VendorSignup() {
 
   const score = strength(password);
   return <AuthFrame title="Open your store in minutes." text="Create your vendor account, then build your catalog and website from your own dashboard.">
-    <form ref={formRef} onSubmit={submit} noValidate>
+    <form ref={formRef} method="post" onSubmit={submit} noValidate>
       <h1>Create your vendor account</h1>
       <p className="sub">It takes less than a minute. No card required.</p>
       <FormAlert message={error} bannerRef={bannerRef} />
@@ -178,7 +178,7 @@ export function VendorForgotPassword() {
   }
 
   return <AuthFrame title="Locked out? It happens." text="We’ll email you a secure link to choose a new password.">
-    <form ref={formRef} onSubmit={submit} noValidate>
+    <form ref={formRef} method="post" onSubmit={submit} noValidate>
       <h1>{sent ? 'Check your inbox' : 'Reset your password'}</h1>
       <p className="sub">{sent ? 'If an account exists for that email, reset instructions are on their way. It can take a few minutes.' : 'Enter the email you used to sign up.'}</p>
       {!sent && <>

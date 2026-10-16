@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { apiFetch, saveAccessToken } from '@/lib/api';
 import { Field, FormAlert, SubmitButton, useFormRequest } from './form-ui';
 import { useToast } from './toast';
+import { PORTAL_HOME, portalFor, type SessionUser as PortalUser } from '@/lib/session';
 
 type SessionUser = { role: string; owned_vendors?: { slug: string; status: string }[]; vendor_memberships?: { vendor: { slug: string; status: string } }[] };
 type AuthResponse = { data: SessionUser; token: string; message?: string };
@@ -41,13 +42,13 @@ export function LoginForm({ audience = 'customer' }: { audience?: 'customer' | '
     const vendor = user.vendor_memberships?.[0]?.vendor;
     if (audience === 'admin' && user.role !== 'platform_admin') return fail('This account does not have platform administrator access.');
     if (audience === 'vendor' && !vendor) return fail('This account isn’t linked to a vendor store. Use the customer sign-in instead, or apply to sell.');
-    if (audience === 'customer' && (user.role === 'platform_admin' || vendor)) return fail('This looks like a vendor or admin account. Please use the sign-in page for that account type.');
+    // Customer sign-in is the general front door: admins and vendors are sent on to their own workspace instead of being turned away.
     saveAccessToken(response.token);
     toast.success('Welcome back! You’re signed in.');
-    router.push(audience === 'admin' ? '/admin/dashboard' : audience === 'vendor' ? '/vendor/dashboard' : '/');
+    router.push(audience === 'admin' ? '/admin/dashboard' : audience === 'vendor' ? '/vendor/dashboard' : PORTAL_HOME[portalFor(user as PortalUser)]);
   }
 
-  return <div className="auth-wrap"><form ref={formRef} className="auth-card" onSubmit={submit} noValidate>
+  return <div className="auth-wrap"><form ref={formRef} method="post" className="auth-card" onSubmit={submit} noValidate>
     <span className="eyebrow">Papertrail {label} account</span><h1>Welcome back</h1><p>Sign in to continue to your {label.toLowerCase()} workspace.</p>
     <FormAlert message={error} bannerRef={bannerRef} />
     <Field label="Email address" name="email" type="email" autoComplete="email" error={fields.email} onInput={() => clearField('email')} />
@@ -55,7 +56,7 @@ export function LoginForm({ audience = 'customer' }: { audience?: 'customer' | '
     <SubmitButton busy={busy} busyText="Signing in…">Sign in</SubmitButton>
     <div className="auth-switch"><Link href="/forgot-password">Forgot password?</Link></div>
     {audience === 'vendor' && <div className="auth-switch">New store? <Link href="/vendor/register">Apply to sell</Link></div>}
-    {audience === 'customer' && <div className="auth-switch">New to Papertrail? <Link href="/register">Create an account</Link></div>}
+    {audience === 'customer' && <><div className="auth-switch">New to Papertrail? <Link href="/register">Create an account</Link></div><div className="auth-switch">Selling or ordering for a school? <Link href="/vendor/login">Vendor sign in</Link> · <Link href="/school/login">School sign in</Link></div></>}
   </form></div>;
 }
 
@@ -85,7 +86,7 @@ export function CustomerRegistrationForm() {
     router.push('/');
   }
 
-  return <div className="auth-wrap"><form ref={formRef} className="auth-card" onSubmit={submit} noValidate>
+  return <div className="auth-wrap"><form ref={formRef} method="post" className="auth-card" onSubmit={submit} noValidate>
     <span className="eyebrow">Join Papertrail</span><h1>Create your account</h1><p>Shop thoughtful finds and keep track of your orders.</p>
     <FormAlert message={error} bannerRef={bannerRef} />
     <Field label="Full name" name="name" autoComplete="name" error={fields.name} onInput={() => clearField('name')} />
