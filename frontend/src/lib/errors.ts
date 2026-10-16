@@ -14,6 +14,7 @@ export function fieldErrors(error: unknown): Record<string, string> {
 /** A message that is safe and useful to show a person, whatever went wrong. */
 export function friendlyMessage(error: unknown, fallback = 'Something went wrong. Please try again.'): string {
   if (!(error instanceof ApiError)) return error instanceof Error && error.message ? error.message : fallback;
+  if (isMissingEndpoint(error)) return 'This feature isn’t available on the server yet. Please try again later or contact support.';
   if (error.status === 0) return 'We can’t reach the server right now. Check your internet connection and try again.';
   if (error.status === 429) return 'Too many attempts. Please wait a minute and try again.';
   if (error.status === 419) return 'Your session expired. Refresh the page and try again.';
@@ -27,4 +28,9 @@ export function friendlyMessage(error: unknown, fallback = 'Something went wrong
 /** True when the API rejected the request with no per-field detail (e.g. wrong password). */
 export function isCredentialError(error: unknown): boolean {
   return error instanceof ApiError && (error.status === 422 || error.status === 401) && Object.keys(fieldErrors(error)).length === 0;
+}
+
+/** True when Laravel says the route itself does not exist (an older deployed API), as opposed to a missing record. */
+export function isMissingEndpoint(error: unknown): boolean {
+  return error instanceof ApiError && ((error.status === 404 && /^The route .* could not be found/i.test(error.message)) || (error.status === 405 && /method is not supported for route/i.test(error.message)));
 }

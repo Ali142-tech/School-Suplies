@@ -37,7 +37,7 @@ const flat = groups.flatMap(g => g.items);
 
 type Note = { id: string; read_at: string | null; created_at: string; data?: { title?: string; message?: string } };
 
-function Notifications() {
+export function Notifications() {
   const [open, setOpen] = useState(false);
   const [items, setItems] = useState<Note[]>([]);
   const ref = useRef<HTMLDivElement>(null);
