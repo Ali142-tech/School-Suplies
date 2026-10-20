@@ -1,5 +1,5 @@
 'use client';
-import Link from 'next/link';
+import Link from '@/components/store-link';
 import { ArrowRight, Heart, Star } from 'lucide-react';
 import type { Product } from '@/lib/data';
 import { money } from '@/lib/data';

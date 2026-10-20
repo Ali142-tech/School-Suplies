@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import Link from '@/components/store-link';
 import { useEffect, useMemo, useState } from 'react';
 import { ArrowLeft, Receipt } from 'lucide-react';
 import { apiFetch, type ApiData } from '@/lib/api';

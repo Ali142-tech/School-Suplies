@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from '@/components/store-link';
 
 // Rendered inside the active chrome: the vendor's own layout on a vendor domain, the marketplace layout elsewhere.
 export default function NotFound() {

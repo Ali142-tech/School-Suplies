@@ -1,11 +1,11 @@
 'use client';
 
-import Link from 'next/link';
+import Link from '@/components/store-link';
 import { useEffect, useState } from 'react';
 import { apiFetch, clearAccessToken, type ApiData } from '@/lib/api';
 import { Field, FormAlert, SubmitButton, useFormRequest } from './form-ui';
 import { useToast } from './toast';
-import { useRouter } from 'next/navigation';
+import { useStoreRouter as useRouter } from '@/components/store-link';
 import styles from '@/app/(public)/account/account.module.css';
 
 type Order={id:number;number:string;status:string;payment_status:string;total:string;currency:string;created_at:string;items:{product_name:string;quantity:number;unit_price:string;status:string}[]};

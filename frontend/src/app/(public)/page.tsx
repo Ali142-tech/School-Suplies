@@ -1,4 +1,4 @@
-import Link from 'next/link';import {ArrowRight,BookOpen,BriefcaseBusiness,Brush,FileText,HeartHandshake,PackageCheck,ShieldCheck,Truck,Search,ShoppingBag,Sparkles} from 'lucide-react';import {products,vendors} from '@/lib/data';
+import Link from '@/components/store-link';import {ArrowRight,BookOpen,BriefcaseBusiness,Brush,FileText,HeartHandshake,PackageCheck,ShieldCheck,Truck,Search,ShoppingBag,Sparkles} from 'lucide-react';import {products,vendors} from '@/lib/data';
 import {HomeMarketplace} from '@/components/home-marketplace';import {ProductCard,SectionHeading} from '@/components/ui';
 import {NewsletterForm} from '@/components/newsletter-form';
 const cats=[['Notebooks','Thoughtful paper for every idea',BookOpen,'#edf1fa'],['Writing','Your tools, your words',FileText,'#f7f0e9'],['Art supplies','Make room for imagination',Brush,'#eef5f0'],['Office essentials','Small details, big difference',BriefcaseBusiness,'#f5eff9'] ] as const;

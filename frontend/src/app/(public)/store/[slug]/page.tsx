@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import Link from '@/components/store-link';
 import { useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { ProductCard } from '@/components/ui';

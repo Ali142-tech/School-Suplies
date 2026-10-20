@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from '@/components/store-link';
 import { ArrowRight } from 'lucide-react';
 import { PrintingProducts } from '@/components/printing-products';
 import { QuoteForm } from '@/components/quote-form';

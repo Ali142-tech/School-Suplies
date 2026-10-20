@@ -1,5 +1,6 @@
 'use client';
 
+import { storefrontHref } from '@/lib/storefront';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { ArrowRight, Check, ExternalLink, FileText, Globe, Package, PackagePlus, Palette, Receipt, TrendingUp, TriangleAlert } from 'lucide-react';
@@ -83,7 +84,7 @@ export function VendorOverview() {
           <div className="vp-item"><span><Globe size={15} style={{ verticalAlign: '-3px', marginRight: 6 }} /><b style={{ color: 'var(--vp-ink)' }}>{domain.hostname}</b></span><Badge tone={domain.is_verified ? 'ok' : 'warn'}>{domain.is_verified ? 'Live' : titleCase(domain.provisioning_status)}</Badge></div>
           <div style={{ display: 'flex', gap: 8, marginTop: 14, flexWrap: 'wrap' }}>
             <button className="btn sm" onClick={() => void navigator.clipboard.writeText(`https://${domain.hostname}`).then(() => toast.success('Storefront URL copied.')).catch(() => toast.error('Could not copy the URL.'))}>Copy URL</button>
-            {approved && <Link className="btn sm" href={`/store/${vendor.slug}`} target="_blank"><ExternalLink size={13} />Preview</Link>}
+            {approved && <Link className="btn sm" href={storefrontHref(vendor)} target="_blank"><ExternalLink size={13} />Preview</Link>}
           </div>
         </Card>}
       </div>

@@ -1,5 +1,5 @@
 'use client';
-import Link from 'next/link';
+import Link from '@/components/store-link';
 import { usePathname } from 'next/navigation';
 import { Menu, Search, ShoppingBag, X, ChevronDown, PackageCheck, Printer, UserRound } from 'lucide-react';
 import { useEffect, useState } from 'react';

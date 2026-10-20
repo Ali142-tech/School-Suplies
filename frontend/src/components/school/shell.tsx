@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import Link from '@/components/store-link';
 import { Home, LayoutDashboard, Package, Receipt, School as SchoolIcon, ShoppingCart } from 'lucide-react';
 import { apiFetch, type ApiData } from '@/lib/api';
 import { PortalShell, usePortalSession } from '@/components/portal/shell';

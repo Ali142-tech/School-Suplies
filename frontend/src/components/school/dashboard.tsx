@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import Link from '@/components/store-link';
 import { useEffect, useState } from 'react';
 import { ArrowRight, Clock, Package, Printer, Receipt, Wallet } from 'lucide-react';
 import { apiFetch, type ApiPage } from '@/lib/api';
