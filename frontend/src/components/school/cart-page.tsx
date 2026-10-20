@@ -1,7 +1,7 @@
 'use client';
 
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import Link from '@/components/store-link';
+import { useStoreRouter as useRouter } from '@/components/store-link';
 import { useState } from 'react';
 import { ImageIcon, Package, Trash2 } from 'lucide-react';
 import { ApiError, apiFetch, type ApiData } from '@/lib/api';

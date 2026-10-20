@@ -1,7 +1,7 @@
 'use client';
 
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import Link from '@/components/store-link';
+import { useStoreRouter as useRouter } from '@/components/store-link';
 import { ClipboardList, Printer, Receipt, ShieldCheck } from 'lucide-react';
 import { apiFetch, saveAccessToken, type ApiData } from '@/lib/api';
 import { Field, FormAlert, useFormRequest } from '@/components/form-ui';

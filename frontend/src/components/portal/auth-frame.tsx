@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from '@/components/store-link';
 import { PackageCheck, ShieldCheck, type LucideIcon } from 'lucide-react';
 
 export type AuthFeature = { icon: LucideIcon; title: string; text: string };

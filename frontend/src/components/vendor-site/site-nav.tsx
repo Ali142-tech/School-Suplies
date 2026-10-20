@@ -1,7 +1,6 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import Link, { useStorePathname } from '@/components/store-link';
 import { useEffect, useState } from 'react';
 import { Menu, ShoppingBag, X } from 'lucide-react';
 import { SafeLink } from '@/components/cms/rich-text';
@@ -10,7 +9,7 @@ import type { SiteLink } from '@/lib/site';
 
 /** Responsive navigation for the vendor website header: inline links on desktop, a toggled panel on mobile. */
 export function SiteNav({ items, action }: { items: SiteLink[]; action: SiteLink }) {
-  const path = usePathname();
+  const path = useStorePathname();
   const [open, setOpen] = useState(false);
   const { items: cartLines } = useStore();
   const cartCount = cartLines.reduce((total, line) => total + line.quantity, 0);

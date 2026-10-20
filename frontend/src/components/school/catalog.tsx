@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import Link from '@/components/store-link';
 import { useMemo, useState } from 'react';
 import { Check, ImageIcon, Package, Printer, ShoppingCart } from 'lucide-react';
 import { money } from '@/lib/data';

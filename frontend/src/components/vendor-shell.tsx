@@ -1,5 +1,6 @@
 'use client';
 
+import { storefrontHref } from '@/lib/storefront';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react';
@@ -120,7 +121,7 @@ export function VendorShell({ children }: { children: React.ReactNode }) {
           <button className="btn ghost icon vp-burger" onClick={() => setOpen(true)} aria-label="Open menu"><Menu size={20} /></button>
           <div className="vp-crumbs"><span>{vendor.name}</span><span>/</span><b>{current?.label ?? 'Dashboard'}</b></div>
           <span className="vp-spacer" />
-          {vendor.status === 'active' && <Link className="btn sm vp-view" href={`/store/${vendor.slug}`} target="_blank"><ExternalLink size={14} /><span>View storefront</span></Link>}
+          {vendor.status === 'active' && <Link className="btn sm vp-view" href={storefrontHref(vendor)} target="_blank"><ExternalLink size={14} /><span>View storefront</span></Link>}
           <Notifications />
           <Link className="vp-user" href="/vendor/profile"><span className="vp-avatar">{user.name.slice(0, 1)}</span><span>{user.name}</span></Link>
         </header>

@@ -1,7 +1,6 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname, useRouter } from 'next/navigation';
+import Link, { useStorePathname, useStoreRouter as useRouter } from '@/components/store-link';
 import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { LogOut, Menu, PackageCheck, X, type LucideIcon } from 'lucide-react';
 import { apiFetch, clearAccessToken, hasAccessToken, UNAUTHORIZED_EVENT } from '@/lib/api';
@@ -38,7 +37,7 @@ export function usePortalSession<S>() { return useContext(Ctx) as (S & { reload:
 
 export function PortalShell<S extends object>({ config, children }: { config: Config<S>; children: ReactNode }) {
   const router = useRouter();
-  const path = usePathname();
+  const path = useStorePathname();
   const [data, setData] = useState<S | null>(null);
   const [open, setOpen] = useState(false);
   const { load, loginHref, logoutPath } = config;

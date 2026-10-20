@@ -1,7 +1,7 @@
 'use client';
 
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import Link from '@/components/store-link';
+import { useStoreRouter as useRouter, useStoreSlug } from '@/components/store-link';
 import { apiFetch, saveAccessToken } from '@/lib/api';
 import { Field, FormAlert, SubmitButton, useFormRequest } from './form-ui';
 import { useToast } from './toast';
@@ -21,6 +21,7 @@ function checkPasswords(password: string, confirmation: string, out: Record<stri
 
 export function LoginForm({ audience = 'customer' }: { audience?: 'customer' | 'vendor' | 'admin' }) {
   const router = useRouter();
+  const storeSlug = useStoreSlug();
   const toast = useToast();
   const { busy, error, fields, formRef, bannerRef, run, fail, clearField } = useFormRequest();
   const label = audience === 'admin' ? 'Super Admin' : audience === 'vendor' ? 'Vendor' : 'Customer';
@@ -45,7 +46,9 @@ export function LoginForm({ audience = 'customer' }: { audience?: 'customer' | '
     // Customer sign-in is the general front door: admins and vendors are sent on to their own workspace instead of being turned away.
     saveAccessToken(response.token);
     toast.success('Welcome back! You’re signed in.');
-    router.push(audience === 'admin' ? '/admin/dashboard' : audience === 'vendor' ? '/vendor/dashboard' : PORTAL_HOME[portalFor(user as PortalUser)]);
+    // A session created inside a store only works inside that store, so it always continues in the storefront; the vendor and admin
+    // portals need their own (central) sign-in.
+    router.push(audience === 'admin' ? '/admin/dashboard' : audience === 'vendor' ? '/vendor/dashboard' : storeSlug ? '/' : PORTAL_HOME[portalFor(user as PortalUser)]);
   }
 
   return <div className="auth-wrap"><form ref={formRef} method="post" className="auth-card" onSubmit={submit} noValidate>

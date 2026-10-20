@@ -1,3 +1,5 @@
+import { STOREFRONT_MODE, parseStorePath } from '@/lib/storefront';
+
 const API_BASE_URL = (process.env.NEXT_PUBLIC_API_URL ?? 'http://127.0.0.1:8001/api').replace(/\/$/, '');
 
 export class ApiError extends Error {
@@ -17,22 +19,40 @@ export type ApiData<T> = { data: T; message?: string };
 
 const TOKEN_KEY = 'printinf-access-token';
 export const UNAUTHORIZED_EVENT = 'printinf:unauthorized';
-export function saveAccessToken(token: string) { if (typeof window !== 'undefined') window.sessionStorage.setItem(TOKEN_KEY, token); }
-export function clearAccessToken() { if (typeof window !== 'undefined') window.sessionStorage.removeItem(TOKEN_KEY); }
-export function hasAccessToken() { return typeof window !== 'undefined' && !!window.sessionStorage.getItem(TOKEN_KEY); }
+
+/**
+ * The storefront this browser page belongs to, or null on the central platform. Path mode: /vendor/{slug}/... . Domain mode: the hostname.
+ * It decides both the store header sent to the API and which stored session is used, so a session created in one store is never sent to
+ * another store or to the central site (the API enforces the same binding on the token itself).
+ */
+function browserStore(): { scope: string; header: [string, string] } | null {
+  if (typeof window === 'undefined') return null;
+  if (STOREFRONT_MODE === 'path') {
+    const store = parseStorePath(window.location.pathname);
+    return store ? { scope: `slug:${store.slug}`, header: ['X-Store-Slug', store.slug] } : null;
+  }
+  const hostname = window.location.hostname.toLowerCase();
+  const platformDomain = (process.env.NEXT_PUBLIC_PLATFORM_DOMAIN ?? '').toLowerCase();
+  const isLocalRoot = hostname === 'localhost' || hostname === '127.0.0.1';
+  const isPlatformRoot = platformDomain && (hostname === platformDomain || hostname === `www.${platformDomain}`);
+  return isLocalRoot || isPlatformRoot ? null : { scope: `host:${hostname}`, header: ['X-Store-Host', hostname] };
+}
+function tokenKey(): string { const store = browserStore(); return store ? `${TOKEN_KEY}:${store.scope}` : TOKEN_KEY; }
+export function saveAccessToken(token: string) { if (typeof window !== 'undefined') window.sessionStorage.setItem(tokenKey(), token); }
+export function clearAccessToken() { if (typeof window !== 'undefined') window.sessionStorage.removeItem(tokenKey()); }
+export function hasAccessToken() { return typeof window !== 'undefined' && !!window.sessionStorage.getItem(tokenKey()); }
 
 export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise<T> {
   const url = `${API_BASE_URL}/${path.replace(/^\/+/, '')}`;
   const headers = new Headers(init.headers);
   headers.set('Accept', 'application/json');
   if (typeof window !== 'undefined') {
-    const token = window.sessionStorage.getItem(TOKEN_KEY);
+    // The session and the store header always come from the same place (this page's store), so one store's bearer token is never sent
+    // in another store's API context. The API validates the store against the database and the token against that store.
+    const token = window.sessionStorage.getItem(tokenKey());
     if (token && !headers.has('Authorization')) headers.set('Authorization', `Bearer ${token}`);
-    const hostname = window.location.hostname.toLowerCase();
-    const platformDomain = (process.env.NEXT_PUBLIC_PLATFORM_DOMAIN ?? '').toLowerCase();
-    const isLocalRoot = hostname === 'localhost' || hostname === '127.0.0.1';
-    const isPlatformRoot = platformDomain && (hostname === platformDomain || hostname === `www.${platformDomain}`);
-    if (!isLocalRoot && !isPlatformRoot && !headers.has('X-Store-Host')) headers.set('X-Store-Host', hostname);
+    const store = browserStore();
+    if (store && !headers.has('X-Store-Slug') && !headers.has('X-Store-Host')) headers.set(store.header[0], store.header[1]);
   }
   if (init.body && !(init.body instanceof FormData) && !headers.has('Content-Type')) {
     headers.set('Content-Type', 'application/json');
@@ -61,7 +81,7 @@ export async function apiFetch<T>(path: string, init: RequestInit = {}): Promise
       ?? `API request failed (${response.status}).`;
     const friendly = response.status === 429 ? 'Too many attempts. Please wait a minute and try again.' : response.status >= 500 ? 'Something went wrong on our side. Please try again in a moment.' : message;
     // A rejected bearer token means the session is gone: let any open portal shell send the person back to sign in.
-    if (response.status === 401 && typeof window !== 'undefined' && window.sessionStorage.getItem(TOKEN_KEY)) window.dispatchEvent(new Event(UNAUTHORIZED_EVENT));
+    if (response.status === 401 && typeof window !== 'undefined' && window.sessionStorage.getItem(tokenKey())) window.dispatchEvent(new Event(UNAUTHORIZED_EVENT));
     throw new ApiError(friendly, response.status, body?.errors);
   }
 

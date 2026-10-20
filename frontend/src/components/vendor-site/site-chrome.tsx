@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from '@/components/store-link';
 import { SafeImage } from '@/components/cms/safe-image';
 import { SafeLink } from '@/components/cms/rich-text';
 import { HEX } from '@/lib/cms';

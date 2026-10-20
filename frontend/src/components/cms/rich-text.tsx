@@ -1,4 +1,4 @@
-import Link from 'next/link';
+import Link from '@/components/store-link';
 import type { ReactNode } from 'react';
 import { isSafeUrl } from '@/lib/cms';
 
