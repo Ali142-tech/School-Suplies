@@ -18,3 +18,11 @@ Vercel's current wildcard requirements and certificate behavior are documented i
 Set `PLATFORM_DOMAIN=localhost` in `backend/.env` and `NEXT_PUBLIC_PLATFORM_DOMAIN=localhost` in `frontend/.env.local`, then restart both servers. Use a hostname such as `approved-shop.localhost:3000`; the backend CORS config allows that local origin. Approve and activate the matching domain mapping in the admin dashboard. Browser/platform support for `*.localhost` can vary, so API host resolution tests are also available through `GET /api/v1/vendors/resolve?host=approved-shop.localhost`.
 
 Custom domains can use the same `store_domains` mapping after a future domain ownership/verification flow is added. This implementation does not claim ownership verification for vendor-submitted custom hosts.
+
+## Assigning a vendor's subdomain after approval
+
+Approval only prepares `{slug}.PLATFORM_DOMAIN` when `PLATFORM_DOMAIN` is set on the API at that moment (path mode, the default, needs none). For a vendor that was approved without it, use **Super Admin → Vendors → (vendor) → Assign platform subdomain** (also available as a button in the vendor's Domains table). It creates the inactive `manual_pending` mapping, refuses a hostname already owned by another vendor, and needs a valid `PLATFORM_DOMAIN`. **Assign custom domain** is for non-platform hostnames only. Neither action makes anything live: after Vercel/DNS/SSL are confirmed, use **Activate domain** in the Domains table.
+
+## `*.vercel.app` cannot be the wildcard base
+
+Vercel does not allow adding `*.school-suplies.vercel.app` (or any wildcard) under a `vercel.app` name, so `vendor.school-suplies.vercel.app` cannot exist. Per-vendor subdomains need a domain you own (see the steps above). As of this review the Vercel account has no registered domains, so none is available yet.
